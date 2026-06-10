@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoMA — Parcours, Devis & FAQ</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F8F7F2;color:#2C2C2A}
+/* HEADER */
+.hdr{background:#2C2C2A;padding:15px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo{font-size:19px;font-weight:700;color:#fff;letter-spacing:-.02em}.logo span{color:#F5C842}
+.hbadge{font-size:11px;background:#F5C842;color:#2C2C2A;padding:3px 10px;border-radius:20px;font-weight:700}
+/* NAV */
+.nav{background:#fff;border-bottom:1px solid #E8E6DE;display:flex;padding:0 24px;position:sticky;top:52px;z-index:100;overflow-x:auto}
+.ntab{padding:13px 18px;font-size:13px;font-weight:500;color:#888;cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:inherit;white-space:nowrap;transition:all .15s}
+.ntab:hover{color:#2C2C2A}
+.ntab.active{color:#2C2C2A;border-bottom-color:#F5C842;font-weight:700}
+/* MAIN */
+.main{max-width:960px;margin:0 auto;padding:24px 20px}
+.sec{display:none}.sec.active{display:block}
+/* PARCOURS BUTTONS */
+.slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:10px}
+.pgrid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.pbtn{padding:8px 13px;border-radius:20px;border:1.5px solid #D3D1C7;background:#fff;color:#2C2C2A;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
+.pbtn:hover{border-color:#B4B2A9;background:#F1EFE8}
+.pbtn.active{background:#F5C842;border-color:#F5C842;font-weight:700}
+.bval{font-size:9px;background:#FAECE7;color:#993C1D;padding:1px 5px;border-radius:8px;font-weight:600}
+/* LEGEND */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding:11px 15px;background:#fff;border-radius:10px;border:1px solid #E8E6DE}
+.litem{display:flex;align-items:center;gap:5px;font-size:12px;color:#5F5E5A}
+.ldot{width:9px;height:9px;border-radius:50%}
+/* PARCOURS CARD */
+.phdr{background:#fff;border:1px solid #E8E6DE;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.ptag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#888;margin-bottom:3px}
+.phdr h2{font-size:15px;font-weight:700}
+.strat{font-size:12px;color:#5F5E5A;line-height:1.6;padding:8px 12px;background:#FEFBEA;border-radius:8px;margin-top:8px;border-left:3px solid #F5C842}
+.sucbadge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:#E1F5EE;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:#0F6E56}
+/* TIMELINE */
+.tl{position:relative;padding-left:32px}
+.tl::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:#E8E6DE;border-radius:2px}
+.ts{position:relative;margin-bottom:13px}
+.ts:last-child{margin-bottom:0}
+.tdot{position:absolute;left:-26px;top:12px;width:13px;height:13px;border-radius:50%;border:2.5px solid #F8F7F2}
+.tc{border:1px solid #E8E6DE;border-radius:10px;padding:12px 15px;background:#fff;transition:border-color .15s}
+.tc:hover{border-color:#B4B2A9}
+.th{display:flex;align-items:flex-start;gap:9px;margin-bottom:3px}
+.tn{font-size:10px;font-weight:700;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.tt{font-size:13px;font-weight:600;color:#2C2C2A;line-height:1.4}
+.tb{font-size:12px;color:#5F5E5A;line-height:1.6;padding-left:28px}
+.tb ul{padding-left:14px;margin-top:3px}.tb li{margin-bottom:2px}
+.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;margin-left:5px;font-weight:600;vertical-align:middle}
+.br{background:#FDF6D8;color:#7A5F00}.bl{background:#E6F1FB;color:#185FA5}.bs{background:#E1F5EE;color:#0F6E56}.bd{background:#FAECE7;color:#993C1D}
+.ds{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle}
+.dsr{background:#F5C842}.dsl{background:#185FA5}.dss{background:#1D9E75}
+.optrow{display:flex;gap:7px;margin-top:6px;flex-wrap:wrap}
+.optcard{flex:1;min-width:120px;padding:7px 9px;border-radius:7px;border:.5px solid #E8E6DE;background:#F8F7F2;font-size:11px;color:#5F5E5A;line-height:1.5}
+.optcard strong{display:block;font-size:11px;font-weight:700;color:#2C2C2A;margin-bottom:2px}
+/* OPTIONAL STEP */
+.ts-opt .tc{border:1px dashed #D3D1C7;background:#FAFAF8;opacity:.78}
+.ts-opt .tdot{background:#D3D1C7!important;border:2px dashed #B4B2A9!important}
+.optbadge{font-size:9px;background:#F1EFE8;color:#888;padding:1px 6px;border-radius:8px;margin-right:5px;font-weight:700}
+/* PARALLEL */
+.parlabel{font-size:10px;color:#888;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.parrow{display:flex;gap:9px;margin-bottom:13px}
+.parcard{flex:1;border:1px solid #185FA5;border-radius:10px;padding:12px 14px;background:#fff}
+/* ════ SIMULATEUR ════ */
+.cgrid{display:grid;grid-template-columns:1fr 310px;gap:18px;align-items:start}
+.icard{background:#fff;border-radius:12px;padding:15px 18px;margin-bottom:14px;border:1px solid #E8E6DE}
+.icard .ival{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:3px}
+.icard h3{font-size:14px;font-weight:700;margin-bottom:5px}
+.icard .iinc{font-size:12px;color:#5F5E5A;line-height:1.6}
+.icard .inote{margin-top:7px;font-size:11px;color:#888;background:#F8F7F2;border-radius:7px;padding:5px 9px}
+.olist{display:flex;flex-direction:column;gap:7px}
+.oitem{background:#fff;border-radius:9px;padding:10px 13px;border:1px solid #E8E6DE;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all .12s;user-select:none}
+.oitem:hover{border-color:#B4B2A9}
+.oitem.ock{background:#F0FAF5;border:1.5px solid #1D9E75}
+.oitem.odis{opacity:.38;cursor:not-allowed;pointer-events:none}
+.oitem.oreq{background:#FDF6D8;border:1px solid #F5C842;cursor:default}
+.oleft{display:flex;align-items:flex-start;gap:9px;flex:1}
+.chkbox{width:17px;height:17px;border-radius:4px;border:2px solid #D3D1C7;background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.chkbox.ck{background:#1D9E75;border-color:#1D9E75}
+.chkbox .ckmark{color:#fff;font-size:10px;font-weight:700;display:none}
+.chkbox.ck .ckmark{display:block}
+.oname{font-size:13px;font-weight:600}
+.odesc{font-size:11px;color:#5F5E5A;margin-top:2px}
+.oprice{font-weight:700;font-size:13px;white-space:nowrap;margin-left:10px}
+.oprice.neg{color:#1D9E75}
+.reqbadge{font-size:10px;background:#F5C842;color:#2C2C2A;padding:1px 6px;border-radius:8px;margin-left:4px;font-weight:600}
+/* RECAP */
+.recap{background:#2C2C2A;border-radius:14px;padding:18px;color:#fff;position:sticky;top:106px}
+.rlbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:12px}
+.rl{display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px}
+.rl .ll{color:#aaa;max-width:175px;line-height:1.4}
+.rl .rv{font-weight:600;white-space:nowrap;margin-left:7px}
+.rl .rv.grn{color:#4ADE80}.rl .rv.ylw{color:#F5C842}
+.rsep{border:none;border-top:1px solid #3C3C3A;margin:8px 0}
+.rtot{display:flex;justify-content:space-between;margin-bottom:3px}
+.rtot .ll{font-size:13px;color:#ccc}.rtot .rv{font-size:16px;font-weight:700}
+.rbox{background:#3C3C3A;border-radius:10px;padding:11px;margin-top:12px}
+.rhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.rttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#aaa}
+.rtog{font-size:10px;border:none;border-radius:12px;padding:2px 8px;cursor:pointer;font-weight:700;font-family:inherit}
+.rtog.on{background:#1D9E75;color:#fff}.rtog.off{background:#555;color:#fff}
+.rcond{font-size:10px;color:#888;margin-top:3px}
+.netrow{margin-top:9px;border-top:1px solid #555;padding-top:9px;display:flex;justify-content:space-between;align-items:center}
+.netrow .ll{font-size:13px;font-weight:700}.netrow .rv{font-size:19px;font-weight:800;color:#F5C842}
+.disc{font-size:10px;color:#555;margin-top:12px;line-height:1.5}
+.resetbtn{width:100%;margin-top:8px;padding:8px;border-radius:9px;border:1px solid #D3D1C7;background:#fff;color:#5F5E5A;font-size:12px;cursor:pointer;font-family:inherit}
+.resetbtn:hover{background:#F1EFE8}
+.fnote{margin-top:28px;padding:14px 18px;background:#fff;border-radius:12px;border:1px solid #E8E6DE;font-size:12px;color:#5F5E5A}
+.fnote strong{color:#2C2C2A;display:block;margin-bottom:6px}
+.fitems{display:flex;flex-wrap:wrap;gap:3px 18px}
+.fitem::before{content:"• ";color:#D3D1C7}
+.fnsub{font-size:11px;color:#888;margin-top:10px;font-style:italic;padding:7px 11px;background:#F8F7F2;border-radius:7px;border-left:3px solid #D3D1C7}
+/* WOMA FORMULE */
+.wfsel{margin-bottom:13px;padding:13px;background:#FEFBEA;border-radius:10px;border:1px solid #F5C842}
+.wfrow{display:flex;gap:7px;margin-top:8px}
+.wfcard{flex:1;padding:9px 11px;border-radius:8px;cursor:pointer;transition:all .12s;border:1px solid #D3D1C7;background:#fff}
+.wfcard.sel{border:2px solid #F5C842;background:#FDF6D8}
+.wfcard .wft{font-size:13px;font-weight:700;margin-bottom:2px}
+.wfcard .wfs{font-size:11px;color:#5F5E5A}
+/* ════ Q&A ════ */
+.qa-wrap{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
+.qa-sidebar{position:sticky;top:106px}
+.qa-scat{display:flex;flex-direction:column;gap:5px}
+.qa-clink{padding:8px 12px;border-radius:9px;font-size:12px;font-weight:500;color:#5F5E5A;cursor:pointer;border:none;background:none;font-family:inherit;text-align:left;transition:all .15s;display:flex;align-items:center;gap:6px}
+.qa-clink:hover{background:#F1EFE8;color:#2C2C2A}
+.qa-clink.active{background:#2C2C2A;color:#fff;font-weight:700}
+.qa-main{}
+.qa-search{width:100%;padding:9px 13px;border:1.5px solid #D3D1C7;border-radius:9px;font-size:13px;font-family:inherit;background:#fff;outline:none;margin-bottom:14px}
+.qa-search:focus{border-color:#2C2C2A}
+.qa-sectitle{font-size:13px;font-weight:700;color:#2C2C2A;margin:20px 0 9px;padding-bottom:5px;border-bottom:2px solid #F5C842}
+.qa-item{background:#fff;border:1px solid #E8E6DE;border-radius:9px;margin-bottom:7px;overflow:hidden}
+.qa-item:hover{border-color:#B4B2A9}
+.qa-q{padding:12px 15px;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;line-height:1.4}
+.qa-q .arr{font-size:11px;color:#888;transition:transform .2s;flex-shrink:0}
+.qa-q.open .arr{transform:rotate(180deg)}
+.qa-a{display:none;padding:0 15px 12px;font-size:13px;color:#5F5E5A;line-height:1.7;border-top:1px solid #F1EFE8}
+.qa-a.open{display:block}
+.qa-add-btn{display:flex;align-items:center;gap:6px;margin-top:6px;padding:8px 13px;border-radius:9px;border:1.5px dashed #D3D1C7;background:#fff;color:#888;font-size:12px;cursor:pointer;font-family:inherit;width:100%;justify-content:center;transition:all .15s}
+.qa-add-btn:hover{border-color:#2C2C2A;color:#2C2C2A;background:#F8F7F2}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:24px;width:520px;max-width:95vw}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.modal label{font-size:12px;font-weight:600;color:#5F5E5A;display:block;margin-bottom:4px;margin-top:12px}
+.modal input,.modal textarea,.modal select{width:100%;padding:9px 12px;border:1.5px solid #D3D1C7;border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.modal input:focus,.modal textarea:focus,.modal select:focus{border-color:#2C2C2A}
+.modal textarea{min-height:90px;resize:vertical}
+.modal-btns{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
+.mbtn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit}
+.mbtn.pri{background:#2C2C2A;color:#fff}
+.mbtn.sec{background:#F1EFE8;color:#2C2C2A;border:1px solid #D3D1C7}
+.mbtn:hover{opacity:.85}
+/* PARCOURS Q&A SECTION */
+.pqa-section{margin-top:28px;border-top:2px dashed #E8E6DE;padding-top:20px}
+.pqa-title{font-size:13px;font-weight:700;color:#2C2C2A;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.empty-state{text-align:center;padding:50px 20px;color:#888}
+.empty-state .ei{font-size:34px;margin-bottom:12px}
+@media(max-width:700px){
+  .cgrid{grid-template-columns:1fr}
+  .recap{position:static}
+  .qa-wrap{grid-template-columns:1fr}
+  .qa-sidebar{position:static}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="logo">Wo<span>MA</span></div>
+    <span style="font-size:11px;color:#888">Parcours, Devis & FAQ</span>
+  </div>
+  <span class="hbadge">Ginefiv × WoMA</span>
+</div>
+
+<div class="nav">
+  <button class="ntab active" onclick="swSec('parcours',this)">🗺️ Parcours</button>
+  <button class="ntab" onclick="swSec('simulateur',this)">💶 Simulateur devis</button>
+  <button class="ntab" onclick="swSec('qa',this)">❓ Questions fréquentes</button>
+</div>
+
+<div class="main">
+
+<!-- ══ SECTION PARCOURS ══ -->
+<div id="sec-parcours" class="sec active">
+  <div class="slabel">Sélectionner le parcours</div>
+  <div class="pgrid" id="map-grid"></div>
+  <div class="legend">
+    <div class="litem"><div class="ldot" style="background:#F5C842"></div>À distance</div>
+    <div class="litem"><div class="ldot" style="background:#185FA5"></div>Près de chez vous</div>
+    <div class="litem"><div class="ldot" style="background:#1D9E75"></div>En personne (Espagne)</div>
+  </div>
+  <div id="map-content"><div class="empty-state"><div class="ei">👆</div><p>Sélectionne un parcours</p></div></div>
+</div>
+
+<!-- ══ SECTION SIMULATEUR ══ -->
+<div id="sec-simulateur" class="sec">
+  <div class="slabel">Sélectionner le parcours</div>
+  <div class="pgrid" id="sim-grid"></div>
+  <div id="sim-content"><div class="empty-state"><div class="ei">👆</div><p>Sélectionne un parcours pour estimer le devis</p></div></div>
+  <div class="fnote">
+    <strong>Non inclus dans toutes les estimations</strong>
+    <div class="fitems">
+      <span class="fitem">Médicaments de stimulation (estimatif 800–1.500 €)</span>
+      <span class="fitem">Examens préalables en France (échographies, prises de sang…)</span>
+      <span class="fitem">Frais de déplacement & hébergement en Espagne</span>
+    </div>
+    <div class="fnsub">* Remboursement éligible SS : jusqu'au montant indiqué, montant non garanti par WoMA.</div>
+  </div>
+</div>
+
+<!-- ══ SECTION Q&A ══ -->
+<div id="sec-qa" class="sec">
+  <div class="qa-wrap">
+    <div class="qa-sidebar">
+      <div class="slabel" style="margin-bottom:8px">Thèmes</div>
+      <div class="qa-scat" id="qa-cats"></div>
+    </div>
+    <div class="qa-main">
+      <input class="qa-search" id="qa-search" type="text" placeholder="🔍 Rechercher une question…" oninput="searchQA()">
+      <div id="qa-list"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- MODAL AJOUT QUESTION -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3>➕ Ajouter une question</h3>
+    <label>Catégorie</label>
+    <select id="m-cat"></select>
+    <label>Question</label>
+    <input type="text" id="m-q" placeholder="Ex: Combien de temps dure la stimulation ?">
+    <label>Réponse</label>
+    <textarea id="m-a" placeholder="La réponse détaillée…"></textarea>
+    <div class="modal-btns">
+      <button class="mbtn sec" onclick="closeModal()">Annuler</button>
+      <button class="mbtn pri" onclick="saveQuestion()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA — PARCOURS
+// ═══════════════════════════════════════════════════
+const WOMA_BASE=770, WOMA_ESS=570;
+
+const P_ORDER=["congelation_ovocytes","congelation_embryons","congelation_combo","iad","fiv","fiv_ovodon","accueil_embryon","ropa"];
+
+const P_LABELS={
+  congelation_ovocytes:{l:"Congélation ovocytes",e:"❄️",v:true},
+  congelation_embryons:{l:"Congélation embryons",e:"🧊",v:true},
+  congelation_combo:{l:"Congélation ovo+embryons",e:"🔮",v:true},
+  iad:{l:"IA / IAD",e:"🔬",v:true},
+  fiv:{l:"FIV",e:"🧬",v:true},
+  fiv_ovodon:{l:"FIV don d'ovocytes",e:"🥚",v:false},
+  accueil_embryon:{l:"Accueil d'embryon",e:"🌱",v:false},
+  ropa:{l:"ROPA",e:"👩‍❤️‍👩",v:false}
+};
+
+// Steps helper
+function sR(n,t,body,nb,nb2){return {dot:"#F5C842",nb:{bg:"#FDF6D8",c:"#7A5F00"},n,t,body,badge:"remote"};}
+function sL(n,t,body){return {dot:"#185FA5",nb:{bg:"#E6F1FB",c:"#185FA5"},n,t,body,badge:"local"};}
+function sS(n,t,body){return {dot:"#1D9E75",nb:{bg:"#E1F5EE",c:"#0F6E56"},n,t,body,badge:"spain"};}
+function sOpt(n,t,body){return {dot:"#D3D1C7",nb:{bg:"#F1EFE8",c:"#888"},n,t,body,badge:"remote",optional:true};}
+
+const STEP_DEMARRAGE=sR("2","Stratégie médicale & démarrage rapide",`<ul><li>Téléconsultation médicale avec gynécologue espagnol (antécédents, bilans partagés en amont, stratégie, protocole, planning)</li><li>Planification personnalisée et digitalisée</li><li>Demande préalable de remboursement sécurité sociale (si éligible — accompagnement WoMA)</li><li>Orientation vers gynécologues en France</li></ul>`);
+const STEP_DEMARRAGE_NORSS={...STEP_DEMARRAGE,body:`<ul><li>Téléconsultation médicale avec gynécologue espagnol (antécédents, bilans partagés en amont, stratégie, protocole, planning)</li><li>Planification personnalisée et digitalisée</li><li>Orientation vers gynécologues en France</li></ul>`};
+const STEP_APPEL=sR("1","Premier appel d'information","Avec une conseillère WoMA — non médical, gratuit");
+const STEP_REMB_IAD=sR("7","Accompagnement remboursement","Jusqu'à 6 tentatives d'IAD remboursables par la sécurité sociale");
+const STEP_REMB_FIV=sR("8","Accompagnement remboursement","Jusqu'à 4 tentatives de FIV remboursables par la sécurité sociale (FIV = ponction + transfert de tous les embryons issus de cette ponction)");
+const STEP_REMB=sR("","Accompagnement remboursement","Par WoMA — reste à charge réduit");
+const STEP_TEST=sL("","Test de grossesse","Test de grossesse 15 jours après. En cas d'échec, reprise possible dès les règles suivantes");
+const STEP_DONNEUR_OPT=sOpt("","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour");
+const STEP_DONNEUR=sR("3","Sélection du donneur de sperme","Constitution du dossier de demande de donneur — pas de délais à ce jour");
+
+const MAPS={
+  congelation_ovocytes:{
+    title:"Congélation d'ovocytes",sub:"Du 1er contact à la congélation : moins de 2 mois vs. 3 ans !",
+    steps:[
+      STEP_APPEL,
+      sR("2","Démarrage rapide du parcours","<ul><li>Planification personnalisée et digitalisée</li><li>Téléconsultation médicale (définition du protocole)</li><li>Orientation vers gynécologues en France</li></ul>"),
+      sL("3","Stimulation hormonale","<ul><li>3–4 échographies et prises de sang près du domicile</li><li>Accompagnement émotionnel et logistique continu par WoMA</li></ul>"),
+      sS("4","Ponction & congélation en Espagne","Recueil des ovocytes sous sédation légère — congélation immédiate — 24h sur place"),
+      {...sR("5","Accompagnement remboursement","Par WoMA — reste à charge réduit")}
+    ]
+  },
+  congelation_embryons:{
+    title:"Congélation d'embryons",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      sL("3","Stimulation hormonale","3–4 échographies et prises de sang près du domicile — accompagnement WoMA continu"),
+      {...sOpt("3b","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour")},
+      sS("4","Ponction en Espagne","Recueil des ovocytes sous sédation légère — 24h sur place"),
+      sS("5","Fécondation & vitrification des embryons","FIV des ovocytes récoltés avec sperme du partenaire ou du donneur — vitrification des embryons obtenus (sans transfert)"),
+      {...sR("6","Accompagnement remboursement","Par WoMA — reste à charge réduit (quelque soit le nombre d'embryons surnuméraires)")}
+    ]
+  },
+  congelation_combo:{
+    title:"Congélation d'ovocytes & d'embryons",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      sL("3","Stimulation hormonale","3–4 échographies et prises de sang — accompagnement WoMA continu"),
+      {...sOpt("3b","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour")},
+      sS("4","Ponction en Espagne","Recueil des ovocytes sous sédation légère — 24h sur place"),
+      sS("5","Congélation d'une partie des ovocytes","Vitrification d'une partie des ovocytes récoltés"),
+      sS("6","Fécondation & vitrification des embryons","FIV de l'autre partie des ovocytes — vitrification des embryons obtenus (sans transfert)"),
+      {...sR("7","Accompagnement remboursement","Par WoMA — reste à charge réduit")}
+    ]
+  },
+  iad:{
+    title:"Insémination Artificielle (IA) — sans ou avec Donneur de sperme (IAD)",
+    successRate:"15% par tentative",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      {...sOpt("3","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour")},
+      {...sL("4","Stimulation hormonale",`<div class="optrow"><div class="optcard"><strong>Option 1 — Avec stimulation légère</strong>Dosage plus faible qu'une FIV. Objectif : 1 à 2 follicules</div><div class="optcard"><strong>Option 2 — Cycle naturel</strong>Moins invasif — plus difficile pour la planification logistique</div></div><div style="margin-top:5px">3–4 échographies et prises de sang + accompagnement WoMA continu</div>`)},
+      sS("5","Insémination en Espagne","Pas de sédation — 24h sur place — retour possible le jour même"),
+      {...STEP_TEST,n:"6"},
+      STEP_REMB_IAD
+    ]
+  },
+  fiv:{
+    title:"Fécondation In Vitro (FIV)",
+    successRate:"30–35% par transfert",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      {...sOpt("3","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour")},
+      sL("4","Stimulation hormonale et préparation endométriale","3–4 échographies et prises de sang près du domicile — accompagnement émotionnel et logistique WoMA"),
+      sS("5","Ponction en Espagne","Recueil des ovocytes sous sédation légère — fécondation en laboratoire pendant 5 jours"),
+      {...sS("6","Transfert d'embryon",`<div class="optrow"><div class="optcard"><strong>Option 1 — Embryon frais (J+5)</strong>Rester 5 jours ou revenir à J+5. Décision avant ou pendant la stimulation selon la réponse ovarienne</div><div class="optcard"><strong>Option 2 — Embryon congelé</strong>Cycle suivant si risque d'hyperstimulation, si PGTA (attente résultats) ou si endomètre non optimal</div></div>`)},
+      {...STEP_TEST,n:"7"},
+      STEP_REMB_FIV
+    ]
+  },
+  fiv_ovodon:{
+    title:"FIV avec don d'ovocytes (avec ou sans sperme du partenaire)",
+    successRate:">80% cumulé (prog. 2 blastocystes) / 50–60% (prog. 1 blastocyste)",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      {...sOpt("2b","Sélection du donneur de sperme (si applicable)","<em style='color:#888'>Option — si pas de sperme du partenaire.</em> Constitution du dossier de demande de donneur — pas de délais à ce jour")},
+      sR("3","Sélection de la donneuse d'ovocytes","Matching phénotypique, immunologique et génétique — disponibilité sous 1 à 2 mois"),
+      sR("4","Synchronisation du cycle","Prise de pilule si ovocytes frais (non nécessaire pour ovocytes congelés)"),
+      sL("5","Préparation endométriale","Prise d'œstrogènes et progestérone — 1 à 2 échographies de contrôle près du domicile"),
+      {...sS("6","Séjour & transfert en Espagne",`<div style="font-size:11px;font-weight:700;color:#2C2C2A;margin-bottom:4px">🔹 Avec sperme du partenaire</div><div class="optrow" style="margin-bottom:8px"><div class="optcard"><strong>Option 1 — 1 voyage (6–7 jours)</strong>Recueil du sperme + FIV + transfert blastocyste J5</div><div class="optcard"><strong>Option 2 — 2 voyages (1–2 jours chacun)</strong>Voyage 1 : congélation du sperme. Voyage 2 : transfert blastocyste J5 (indiqué en cas de PGTA)</div></div><div style="font-size:11px;font-weight:700;color:#2C2C2A;margin-bottom:4px">🔹 Avec sperme de donneur</div><div class="optrow"><div class="optcard"><strong>1 voyage (1–2 jours)</strong>Transfert de blastocyste J5 — FIV réalisée en amont du déplacement</div></div>`)},
+      {...STEP_TEST,n:"7"},
+      {...sR("8","Accompagnement remboursement","Par WoMA — reste à charge réduit")}
+    ]
+  },
+  accueil_embryon:{
+    title:"Accueil d'embryon",
+    successRate:"30–35% par transfert",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE,
+      sR("3","Sélection de l'embryon","Matching phénotypique, immunologique et génétique — délais plus longs (liste d'attente, peu d'embryons disponibles)"),
+      sL("4","Préparation endométriale","Prise d'œstrogènes et progestérone — 1 à 2 échographies de contrôle près du domicile"),
+      sS("5","Transfert en Espagne","1 voyage de 1–2 jours — transfert de blastocyste J5"),
+      {...STEP_TEST,n:"6"},
+      {...sR("7","Accompagnement remboursement","Par WoMA — reste à charge réduit")}
+    ]
+  },
+  ropa:{
+    title:"ROPA (Co-maternité ou FIV partagée)",
+    successRate:"30–35% par transfert",
+    steps:[
+      STEP_APPEL,
+      STEP_DEMARRAGE_NORSS,
+      STEP_DONNEUR,
+      {parallel:true,steps:[
+        {n:"4A",t:"Stimulation — Partenaire 1",badge:"local",body:"3–4 échographies et prises de sang + synchronisation des 2 partenaires"},
+        {n:"4B",t:"Préparation endométriale — Partenaire 2",badge:"local",body:"Prise d'œstrogènes et progestérone — 1 à 2 échographies de contrôle"}
+      ]},
+      {...sS("5","Ponction & transfert en Espagne",`<div class="optrow"><div class="optcard"><strong>Option 1 — 1 voyage (6–7 jours)</strong>Ponction ovocytes partenaire 1 + FIV + transfert blastocyste J5 pour la partenaire 2</div><div class="optcard"><strong>Option 2 — 2 voyages (1–2 jours chacun)</strong>Voyage 1 : ponction + FIV. Voyage 2 : transfert blastocyste J5 (indiqué en cas de PGTA)</div></div>`)},
+      {...STEP_TEST,n:"6"},
+      {...sR("7","Accompagnement remboursement","Par WoMA — reste à charge réduit")}
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// DATA — SIMULATEUR
+// ═══════════════════════════════════════════════════
+const SIM={
+  congelation_ovocytes:{base:2400,inc:"Stimulation, ponction, vitrification ovocytes — inclut 1ère année de stockage",remb:1970,rCond:"Femme entre 29 et 37 ans",womaOpt:true,opts:[
+    {id:"stockage_ovo",l:"Stockage annuel ovocytes (à partir année 2)",p:240,pl:"240 €/an",d:"Frais annuels de conservation dès la 2ème année"},
+  ]},
+  congelation_embryons:{base:4580,inc:"FIV sans transfert (4.000 €) + vitrification embryons (580 €) — inclut 1ère année de stockage, quelque soit le nombre d'embryons surnuméraires",remb:2498,opts:[
+    {id:"don_sperme",l:"Don de sperme",p:390,d:"Si pas de sperme du partenaire"},
+    {id:"culture_prolongee",l:"Culture prolongée J+5 (blastocyste)",p:405,d:"Améliore la sélection embryonnaire"},
+    {id:"embryoscope",l:"Embryoscope (Time-lapse)",p:380,d:"Optimise les conditions de culture"},
+    {id:"stockage_emb",l:"Stockage annuel embryons (à partir année 2)",p:480,pl:"480 €/an",d:"Frais annuels de conservation dès la 2ème année"},
+    {id:"tcg_e",l:"Test compatibilité génétique — Essential",p:490,d:"Minimise le risque de transmission de maladies génétiques",ex:["tcg_x"]},
+    {id:"tcg_x",l:"Test compatibilité génétique — Expanded",p:925,d:"Panel élargi",ex:["tcg_e"]},
+  ]},
+  congelation_combo:{base:5180,inc:"Programme combiné ovocytes + embryons — inclut 1ère année de stockage",opts:[
+    {id:"stockage_combo",l:"Stockage annuel combiné (à partir année 2)",p:720,pl:"720 €/an",d:"240 €/an ovocytes + 480 €/an embryons"},
+  ]},
+  iad:{base:695,inc:"Évaluation du cycle, capacitation spermatique, insémination, confirmation grossesse",remb:248,note:"Pas de sédation nécessaire pour l'IA.",opts:[
+    {id:"donneur_sperme",l:"Don de sperme (si pas de partenaire)",p:390,d:"Échantillon sperme donneur — optionnel si sperme du partenaire disponible"},
+    {id:"tcg_e",l:"Test compatibilité génétique — Essential",p:490,d:"Minimise le risque de transmission de maladies génétiques",ex:["tcg_x"]},
+    {id:"tcg_x",l:"Test compatibilité génétique — Expanded",p:925,d:"Panel élargi",ex:["tcg_e"]},
+  ]},
+  fiv:{base:4400,inc:"Contrôles du cycle, ponction sous sédation, micro-injection, culture J+3, transfert",remb:2775,opts:[
+    {id:"don_sperme",l:"Don de sperme",p:390,d:"Si pas de sperme du partenaire"},
+    {id:"culture_prolongee",l:"Culture prolongée J+5 (blastocyste)",p:405,d:"Améliore la sélection embryonnaire"},
+    {id:"vitrification",l:"Vitrification embryons surnuméraires",p:580,d:"Inclut 1ère année de stockage, quelque soit le nombre d'embryons surnuméraires"},
+    {id:"forfait_labo",l:"Forfait techniques de laboratoire",p:575,d:"Time-lapse, IMSI, Embryogen, Embryoglue, MACS, Fertile Chip (selon indication médicale)"},
+    {id:"embryoscope",l:"Embryoscope (Time-lapse)",p:380,d:"Optimise les conditions de culture embryonnaire"},
+    {id:"macs",l:"MACS — sélection immunomagnétique",p:270,d:"Sélection des spermatozoïdes sains"},
+    {id:"imsi",l:"IMSI — sélection spermatique avancée",p:270,d:"Sélection des spermatozoïdes sans défauts"},
+    {id:"microfluides",l:"Sélection spermatique par microfluides",p:270,d:"Pour les cas de fragmentation ADN spermatique"},
+    {id:"embryoglue",l:"Embryoglue®",p:300,d:"Milieu enrichi favorisant l'implantation"},
+    {id:"sedation",l:"Sédation lors du transfert",p:325,d:"En cas de problèmes anatomiques ou stress"},
+    {id:"pgta",l:"FIV + Génétique PGT-A (1 embryon inclus)",p:2180,d:"Dépistage chromosomique préimplantatoire — surcoût vs FIV standard"},
+    {id:"pgta_sup",l:"PGT-A — embryon(s) supplémentaire(s)",p:370,d:"Par embryon supplémentaire analysé",req:["pgta"]},
+    {id:"duostim",l:"Duostim",p:3090,d:"2 stimulations consécutives dans le même cycle"},
+    {id:"transfert_cryo",l:"Nouveau transfert embryon congelé (cycle ultérieur)",p:1400,d:"Si embryons vitrifiés à transférer sur un prochain cycle"},
+    {id:"tcg_e",l:"Test compatibilité génétique — Essential",p:490,d:"Minimise le risque de transmission de maladies génétiques",ex:["tcg_x"]},
+    {id:"tcg_x",l:"Test compatibilité génétique — Expanded",p:925,d:"Panel élargi",ex:["tcg_e"]},
+  ]},
+  fiv_ovodon:{base:7925,inc:"Programme min. 2 blastocystes — évaluation endomètre, sélection & stimulation donneuse, médicaments donneuse, micro-injection, culture, transfert, matching génétique",remb:1429,opts:[
+    {id:"prog_1",l:"Programme min. 1 blastocyste (au lieu de 2)",p:-3325,pl:"−3.325 € → 4.600 € total",d:"Taux réussite cumulé 50–60% vs >80% pour le programme 2 blastocystes",ex:["prog_m"]},
+    {id:"prog_m",l:"Programme Maternity — garantie bébé",p:10975,pl:"+10.975 € → 18.900 € total",d:"Jusqu'à 3 cycles, remboursement intégral si pas de bébé sous 24 mois",ex:["prog_1"]},
+    {id:"don_sperme",l:"Don de sperme (si pas de partenaire)",p:390,d:"Sperme de donneur"},
+    {id:"vitrification",l:"Vitrification blastocystes surnuméraires",p:580,d:"Inclut 1ère année de stockage"},
+    {id:"sedation",l:"Sédation lors du transfert",p:325,d:"En cas de problèmes anatomiques ou stress"},
+    {id:"transfert_cryo",l:"Nouveau transfert embryon congelé (cycle ultérieur)",p:1400,d:"Embryons vitrifiés surnuméraires"},
+    {id:"tcg_e",l:"Test compatibilité génétique — Essential",p:490,d:"Minimise le risque de transmission de maladies génétiques",ex:["tcg_x"]},
+    {id:"tcg_x",l:"Test compatibilité génétique — Expanded",p:925,d:"Panel élargi",ex:["tcg_e"]},
+  ]},
+  accueil_embryon:{base:3200,inc:"Suivi échographique, sélection embryon, transfert (inclut acompte 1.000 € pour recherche)",remb:277,note:"Délai moyen 6 mois. 1.000 € retenus si abandon sans raison clinique.",opts:[
+    {id:"sedation",l:"Sédation lors du transfert",p:325,d:"En cas de problèmes anatomiques ou stress"},
+  ]},
+  ropa:{base:5440,inc:"Contrôles cycle, ponction sous sédation, micro-injection, banque de sperme, culture J+3, transfert",opts:[
+    {id:"culture_prolongee",l:"Culture prolongée J+5 (blastocyste)",p:405,d:"Améliore la sélection embryonnaire"},
+    {id:"embryoscope",l:"Embryoscope (Time-lapse)",p:380,d:"Optimise les conditions de culture"},
+    {id:"embryoglue",l:"Embryoglue®",p:300,d:"Favorise l'implantation de l'embryon"},
+    {id:"sedation",l:"Sédation lors du transfert",p:325,d:"En cas de problèmes anatomiques ou stress"},
+    {id:"vitrification",l:"Vitrification embryons surnuméraires",p:580,d:"Inclut 1ère année de stockage"},
+    {id:"transfert_cryo",l:"Nouveau transfert embryon congelé (cycle ultérieur)",p:1400,d:"Cycle ultérieur avec embryons vitrifiés surnuméraires"},
+    {id:"duostim",l:"Duostim",p:3090,d:"2 stimulations consécutives dans le même cycle"},
+    {id:"tcg_e",l:"Test compatibilité génétique — Essential",p:490,d:"Minimise le risque de transmission de maladies génétiques",ex:["tcg_x"]},
+    {id:"tcg_x",l:"Test compatibilité génétique — Expanded",p:925,d:"Panel élargi",ex:["tcg_e"]},
+  ]}
+};
+
+// ═══════════════════════════════════════════════════
+// DATA — Q&A
+// ═══════════════════════════════════════════════════
+const QA_CATS=[
+  {id:"commun",l:"🌐 Questions communes"},
+];
+
+// Questions stockées localement (localStorage pour persistance)
+const DEFAULT_QA=[
+  // COMMUN
+  {id:1,cat:"commun",q:"Par où commencer si je veux démarrer un parcours PMA avec WoMA ?",a:"Tout commence par un premier appel d'information gratuit avec une conseillère WoMA. C'est un échange non médical qui permet de faire le point sur ta situation, comprendre les différents parcours disponibles et définir la meilleure stratégie. Aucun bilan préalable n'est nécessaire pour ce premier appel."},
+  {id:2,cat:"commun",q:"Combien de temps dure un parcours de A à Z ?",a:"Pour une IAD : 4 à 8 semaines. Pour une FIV : 6 à 10 semaines. Pour un don d'ovocytes : 2 à 3 mois (délai matching donneuse). Pour un accueil d'embryon : environ 6 mois en moyenne (liste d'attente)."},
+  {id:3,cat:"commun",q:"La barrière de la langue est-elle un problème à Ginefiv ?",a:"Non. Ginefiv dispose d'équipes francophones et WoMA assure la coordination. Tous les documents et échanges importants sont en français."},
+  {id:4,cat:"commun",q:"Comment se passe la stimulation hormonale ?",a:"Des injections sous-cutanées quotidiennes d'hormones (FSH) pendant 10 à 14 jours. Très fines aiguilles, gérées facilement à domicile. 2 à 3 échographies et prises de sang en France près de chez toi pour surveiller la réponse ovarienne. Accompagnement WoMA continu pendant cette phase."},
+  {id:5,cat:"commun",q:"Les médicaments de stimulation sont-ils remboursés ?",a:"Oui, ils sont pris en charge par l'Assurance maladie (gratuits), sur présentation d'une ordonnance de gynécologue français. WoMA t'aide à obtenir cette ordonnance auprès du gynécologue espagnol de Ginefiv."},
+  {id:6,cat:"commun",q:"Comment faire une demande de remboursement à la Sécurité sociale ?",a:"WoMA t'accompagne pour constituer et soumettre ton dossier de demande préalable à la CPAM (formulaire S3140) avant le début du traitement. Après le traitement, les factures sont transmises à ta CPAM pour remboursement. WoMA gère tout cela avec toi."},
+  {id:7,cat:"commun",q:"Y a-t-il des frais cachés à prévoir ?",a:"Non. Tout est transparent. Les éléments non inclus sont clairement listés : médicaments de stimulation (estimatif 800–1.500 €), examens préalables en France (échographies, prises de sang…), frais de déplacement et hébergement en Espagne."},
+  {id:9,cat:"commun",q:"Comment gérer l'attente et l'incertitude pendant un parcours PMA ?",a:"L'attente est souvent l'aspect le plus difficile. Ta coordinatrice WoMA est disponible pour répondre à tes questions et t'accompagner dans les moments de doute. Nous recommandons également de ne pas hésiter à consulter un psychologue spécialisé en PMA."},
+  {id:10,cat:"commun",q:"Le parcours WoMA est-il adapté aux femmes seules ?",a:"Oui, absolument. WoMA accompagne les femmes seules, les couples hétérosexuels et les couples de femmes. Les parcours IAD, FIV avec don de sperme et FIV avec don d'ovocytes sont tous disponibles pour les femmes seules."},
+  // ── IA / IAD
+  {id:11,cat:"iad",q:"Quelle est la différence entre une IA et une FIV ?",a:"L'IA est peu invasive : les spermatozoïdes du donneur ou du partenaire sont déposés directement dans l'utérus. Pas d'anesthésie, moins coûteux. La FIV est plus complexe : ponction des ovocytes sous sédation légère, fécondation en laboratoire, puis transfert de l'embryon. La stratégie dépend de ton âge, ta réserve ovarienne et ton historique médical."},
+  {id:12,cat:"iad",q:"Peut-on commencer directement par une FIV plutôt que par l'IA ?",a:"Cela dépend de ta situation. En règle générale, si tu as moins de 38–39 ans et une bonne réserve ovarienne, 3–4 tentatives d'IA sont recommandées avant d'envisager une FIV. Si tu as un facteur médical spécifique, aller directement en FIV est possible. La stratégie est définie lors de la téléconsultation."},
+  {id:13,cat:"iad",q:"Combien de temps dure l'insémination et dois-je rester en Espagne ?",a:"L'insémination elle-même dure quelques minutes seulement. Pas de sédation nécessaire. Tu peux rentrer en France le jour même — c'est un des grands avantages de l'IA."},
+  {id:14,cat:"iad",q:"Que se passe-t-il si mes IA ne fonctionnent pas ?",a:"En cas d'échec répété, le médecin réévaluera la stratégie avec toi lors d'une nouvelle téléconsultation. Une orientation vers la FIV est souvent envisagée après 3–4 échecs d'IA. WoMA t'accompagne dans cette transition."},
+  // ── FIV
+  {id:15,cat:"fiv",q:"Qu'est-ce qu'un blastocyste et pourquoi est-ce important ?",a:"Un blastocyste est un embryon au stade J+5 de développement. Transférer un blastocyste (vs embryon J+3) permet de mieux sélectionner les embryons les plus viables, ce qui augmente les taux d'implantation et réduit le risque de grossesse gémellaire."},
+  {id:16,cat:"fiv",q:"Qu'est-ce que le PGT-A (test génétique préimplantatoire) ?",a:"Le PGT-A détecte les anomalies chromosomiques sur les embryons avant le transfert. On ne transfère que les embryons chromosomiquement normaux. Cela améliore les chances d'implantation et réduit le risque de fausse couche."},
+  {id:17,cat:"fiv",q:"Quelle est la différence entre un transfert frais et un transfert congelé ?",a:"Transfert frais : l'embryon est transféré J+5 après la ponction dans le même cycle. Transfert congelé : les embryons sont vitrifiés et transférés lors d'un cycle ultérieur. Les taux de réussite sont comparables. Le transfert congelé est recommandé en cas d'hyperstimulation, si un PGT-A est réalisé ou si l'endomètre n'est pas optimal."},
+  {id:18,cat:"fiv",q:"Que se passe-t-il si j'hyperstimule ?",a:"En cas de risque d'hyperstimulation ovarienne (SHO), le transfert frais est annulé pour protéger ta santé et les embryons sont vitrifiés. Le transfert aura lieu lors d'un cycle ultérieur, ce qui est tout aussi efficace et plus sûr."},
+  // ── FIV don d'ovocytes
+  {id:19,cat:"fiv_ovodon",q:"Comment se passe la sélection de la donneuse d'ovocytes ?",a:"Ginefiv réalise un matching phénotypique (groupe sanguin, couleur des yeux, cheveux, taille, ethnie) et génétique. La disponibilité est généralement de 1 à 2 mois. Pour certaines ethnies moins représentées dans la population espagnole, le délai peut être plus long."},
+  {id:20,cat:"fiv_ovodon",q:"Le don est-il anonyme en Espagne ?",a:"Oui, le don est anonyme en Espagne. Le donneur et la receveuse ne se connaissent pas. Les enfants conçus par don pourront accéder à certaines informations médicales non identifiantes à leur majorité."},
+  {id:21,cat:"fiv_ovodon",q:"Suis-je prête psychologiquement pour un don d'ovocytes ?",a:"Il est normal de traverser des questionnements profonds sur l'identité, la filiation, le deuil de la génétique. Être prête ne signifie pas être totalement sereine — cela signifie pouvoir avancer malgré les incertitudes. Ginefiv propose un accompagnement psychologique, et WoMA peut t'orienter vers des thérapeutes spécialisés en PMA."},
+  // ── Accueil d'embryon
+  {id:22,cat:"accueil_embryon",q:"Quelle est la différence entre l'accueil d'embryon et le don d'ovocytes ?",a:"Dans le don d'ovocytes, l'embryon est fécondé avec le sperme de ton partenaire ou d'un donneur — les délais sont plus courts et les taux de succès meilleurs. Dans l'accueil d'embryon, l'embryon a été donné par un couple ayant réalisé une FIV et qui n'en a plus besoin — les dons d'embryons sont rares, ce qui allonge les délais d'attente."},
+  {id:23,cat:"accueil_embryon",q:"Quel est le délai pour obtenir un embryon en accueil d'embryon ?",a:"Le délai pour un accueil d'embryon peut être de 6 mois ou plus selon les disponibilités et les listes d'attente — les embryons disponibles sont peu nombreux. Un acompte de 1.000 € est demandé pour commencer la recherche."},
+  // ── ROPA
+  {id:24,cat:"ropa",q:"Qu'est-ce que la méthode ROPA ?",a:"La ROPA (Reception of Oocytes from Partner) est destinée aux couples de femmes. La partenaire 1 fournit les ovocytes (stimulation + ponction), et la partenaire 2 porte la grossesse (transfert d'embryon). Les deux partenaires sont ainsi biologiquement impliquées."},
+  {id:25,cat:"ropa",q:"Faut-il venir ensemble en Espagne pour la ROPA ?",a:"Oui, les deux partenaires doivent être présentes lors du séjour en Espagne (ponction + transfert dans le même voyage, option 1). En option 2 voyages, les deux partenaires peuvent planifier leurs présences séparément."},
+  // ── Congélation
+  {id:26,cat:"congelation_ovocytes",q:"Combien de temps mes ovocytes peuvent-ils rester congelés ?",a:"Les ovocytes peuvent rester vitrifiés indéfiniment d'un point de vue technique. La première année de stockage est incluse dans le prix Ginefiv. À partir de la 2ème année, des frais annuels de 240 € s'appliquent."},
+  {id:27,cat:"congelation_embryons",q:"Quelle est la différence entre congeler des ovocytes et congeler des embryons ?",a:"La congélation d'ovocytes conserve les ovocytes non fécondés — cela préserve la flexibilité (tu choisiras le partenaire ou le donneur plus tard). La congélation d'embryons implique de féconder les ovocytes immédiatement avant vitrification. Les taux de survie à la décongélation sont légèrement meilleurs pour les embryons."},
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let mapSel=null, simSel=null, simOpts={}, showRemb=true, womaFormule="serenite";
+let qaCat="commun", qaSearch="", modalCat="commun";
+let nextId=100;
+
+function loadQA(){
+  try{
+    const s=localStorage.getItem("woma_qa");
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return [...DEFAULT_QA];
+}
+function saveQA(data){
+  try{localStorage.setItem("woma_qa",JSON.stringify(data));}catch(e){}
+}
+let qaData=loadQA();
+
+// ═══════════════════════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════════════════════
+function fmt(n){return n.toLocaleString("fr-FR")+" €";}
+
+function buildGrid(gid,sel,fn){
+  document.getElementById(gid).innerHTML=P_ORDER.map(id=>{
+    const lb=P_LABELS[id];
+    return `<button class="pbtn ${sel===id?'active':''}" onclick="${fn}('${id}')">${lb.e} ${lb.l}</button>`;
+  }).join("");
+}
+
+function badgeHtml(badge){
+  const m={remote:["br","À distance"],local:["bl","Près de chez vous"],spain:["bs","Espagne"]};
+  const [cls,txt]=m[badge]||["",""];
+  return `<span class="badge ${cls}">${txt}</span>`;
+}
+function dotColor(badge){return {remote:"#F5C842",local:"#185FA5",spain:"#1D9E75"}[badge]||"#D3D1C7";}
+
+function renderStep(s){
+  if(s.parallel){
+    return `<div style="margin-bottom:13px"><div class="parlabel">Étapes simultanées</div><div class="parrow">
+      ${s.steps.map(ps=>`<div class="parcard"><div class="th"><div class="tn" style="background:#E6F1FB;color:#185FA5;font-size:10px;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center">${ps.n}</div><div class="tt"><span class="ds dsl"></span>${ps.t} ${badgeHtml(ps.badge)}</div></div><div class="tb" style="padding-left:28px">${ps.body}</div></div>`).join("")}
+    </div></div>`;
+  }
+  const dc=s.dot||dotColor(s.badge);
+  const isOpt=s.optional;
+  return `<div class="ts ${isOpt?'ts-opt':''}">
+    <div class="tdot" style="background:${dc}"></div>
+    <div class="tc">
+      <div class="th">
+        <div class="tn" style="background:${s.nb.bg};color:${s.nb.c}">${s.n}</div>
+        <div class="tt">${isOpt?'<span class="optbadge">OPTIONNEL</span>':''}<span class="ds" style="background:${dc}"></span>${s.t} ${badgeHtml(s.badge)}</div>
+      </div>
+      <div class="tb">${s.body}</div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// MAP SECTION
+// ═══════════════════════════════════════════════════
+function selMap(id){
+  mapSel=id;
+  buildGrid("map-grid",mapSel,"selMap");
+  const m=MAPS[id];
+  const lb=P_LABELS[id];
+  // Q&A for this parcours
+  const pqas=qaData.filter(q=>q.cat===id);
+  const pqaHtml=`<div class="pqa-section">
+    <div class="pqa-title">❓ Questions fréquentes — ${lb.l}</div>
+    ${pqas.length===0?'<p style="font-size:12px;color:#888;font-style:italic">Aucune question spécifique pour ce parcours. Ajoutes-en via l\'onglet Q&A !</p>':
+      pqas.map((q,i)=>`<div class="qa-item">
+        <div class="qa-q" id="mpq-${q.id}" onclick="tQA('mpq-${q.id}','mpa-${q.id}')"><span>${q.q}</span><span class="arr">▼</span></div>
+        <div class="qa-a" id="mpa-${q.id}">${q.a}</div>
+      </div>`).join("")}
+    <button class="qa-add-btn" onclick="openModal('${id}')">➕ Ajouter une question pour ce parcours</button>
+  </div>`;
+
+  document.getElementById("map-content").innerHTML=`
+    <div class="phdr">
+      <h2>${m.title}</h2>
+      ${m.strategy?`<div class="strat">${m.strategy}</div>`:""}
+      ${m.successRate?`<div class="sucbadge">📊 Taux de succès Ginefiv : ${m.successRate}</div>`:""}
+    </div>
+    <div class="tl">${m.steps.map(renderStep).join("")}</div>
+    ${pqaHtml}`;
+}
+
+// ═══════════════════════════════════════════════════
+// SIMULATEUR SECTION
+// ═══════════════════════════════════════════════════
+function calcTotal(){
+  if(!simSel) return 0;
+  const d=SIM[simSel];
+  let t=d.base;
+  (d.req||[]).forEach(r=>t+=r.p);
+  (d.opts||[]).forEach(o=>{
+    if(!simOpts[o.id]) return;
+    if(o.req&&!o.req.every(r=>simOpts[r])) return;
+    t+=o.p;
+  });
+  return t;
+}
+function getWoma(){
+  if(simSel&&SIM[simSel].womaOpt) return womaFormule==="essentiel"?WOMA_ESS:WOMA_BASE;
+  return WOMA_BASE;
+}
+
+function renderSim(){
+  buildGrid("sim-grid",simSel,"selSim");
+  if(!simSel) return;
+  const d=SIM[simSel];
+  const lb=P_LABELS[simSel];
+  const gin=calcTotal();
+  const wf=getWoma();
+  const grand=gin+wf;
+  const remb=d.remb||0;
+  const net=grand-(showRemb?remb:0);
+  const chk=(d.opts||[]).filter(o=>simOpts[o.id]&&(!o.req||o.req.every(r=>simOpts[r])));
+
+  const womaHtml=d.womaOpt?`<div class="wfsel">
+    <div class="slabel" style="margin-bottom:8px">Formule d'accompagnement WoMA</div>
+    <div class="wfrow">
+      <div class="wfcard ${womaFormule==='essentiel'?'sel':''}" onclick="setWoma('essentiel')"><div class="wft">Essentiel — 570 €</div><div class="wfs">Accompagnement de base</div></div>
+      <div class="wfcard ${womaFormule==='serenite'?'sel':''}" onclick="setWoma('serenite')"><div class="wft">Sérénité — 770 € ⭐</div><div class="wfs">Accompagnement complet</div></div>
+    </div>
+  </div>`:"";
+
+  const optsHtml=(d.req||[]).map(r=>`<div class="oitem oreq">
+    <div class="oleft"><div class="chkbox ck"><span class="ckmark">✓</span></div><div><div class="oname">${r.l} <span class="reqbadge">Obligatoire</span></div><div class="odesc">${r.d}</div></div></div>
+    <div class="oprice">+${r.p} €</div>
+  </div>`).join("")+
+  (d.opts||[]).map(o=>{
+    const ck=!!simOpts[o.id];
+    const dis=o.req&&!o.req.every(r=>simOpts[r]);
+    const ps=o.pl||(o.p>=0?`+${o.p} €`:`${o.p.toLocaleString("fr-FR")} €`);
+    return `<div class="oitem ${ck?'ock':''} ${dis?'odis':''}" onclick="togOpt('${o.id}')">
+      <div class="oleft"><div class="chkbox ${ck?'ck':''}"><span class="ckmark">✓</span></div><div><div class="oname">${o.l}</div>${o.d?`<div class="odesc">${o.d}</div>`:''}</div></div>
+      <div class="oprice ${o.p<0?'neg':''}">${ps}</div>
+    </div>`;
+  }).join("");
+
+  const rembHtml=d.remb?`<div class="rbox">
+    <div class="rhdr"><span class="rttl">Remboursement éligible SS*</span><button class="rtog ${showRemb?'on':'off'}" onclick="togRemb()">${showRemb?"Inclus ✓":"Exclure"}</button></div>
+    <div class="rl"><span class="ll">Remboursement éligible SS*</span><span class="rv grn">−${fmt(remb)}</span></div>
+    ${d.rCond?`<div class="rcond">⚠️ Condition : ${d.rCond}</div>`:""}
+    <div class="netrow"><span class="ll">Reste à charge estimé</span><span class="rv">${fmt(net)}</span></div>
+  </div>`:`<div class="rbox">
+    <div class="rttl" style="margin-bottom:5px">Remboursement éligible SS*</div>
+    <div style="font-size:12px;color:#666">Pas de remboursement SS prévu pour ce parcours</div>
+    <div class="netrow"><span class="ll">Reste à charge estimé</span><span class="rv">${fmt(grand)}</span></div>
+  </div>`;
+
+  document.getElementById("sim-content").innerHTML=`<div class="cgrid">
+    <div>
+      <div class="icard">
+        <h3>${lb.e} ${MAPS[simSel].title}</h3>
+        <div class="iinc" style="margin-top:4px"><strong>Inclus :</strong> ${d.inc}</div>
+        ${d.note?`<div class="inote">ℹ️ ${d.note}</div>`:""}
+      </div>
+      ${womaHtml}
+      <div class="slabel">Options & compléments</div>
+      <div class="olist">${optsHtml}</div>
+    </div>
+    <div>
+      <div class="recap">
+        <div class="rlbl">Récapitulatif</div>
+        <div class="rl"><span class="ll">Traitement de base Ginefiv</span><span class="rv">${fmt(d.base)}</span></div>
+        ${(d.req||[]).map(r=>`<div class="rl"><span class="ll">${r.l}</span><span class="rv">+${r.p} €</span></div>`).join("")}
+        ${chk.map(o=>`<div class="rl"><span class="ll">${o.l}</span><span class="rv ${o.p<0?'grn':''}">${o.p>=0?'+':''}${o.p.toLocaleString("fr-FR")} €</span></div>`).join("")}
+        <hr class="rsep">
+        <div class="rl"><span class="ll">Sous-total Ginefiv</span><span class="rv">${fmt(gin)}</span></div>
+        <div class="rl"><span class="ll" style="color:#F5C842">Accompagnement WoMA</span><span class="rv ylw">+${wf} €</span></div>
+        <hr class="rsep">
+        <div class="rtot"><span class="ll">Total brut estimé</span><span class="rv">${fmt(grand)}</span></div>
+        ${rembHtml}
+        <div class="disc">* Remboursement éligible SS : jusqu'au montant indiqué, non garanti par WoMA. Médicaments et examens préalables non inclus.</div>
+      </div>
+      ${chk.length>0?`<button class="resetbtn" onclick="resetOpts()">↺ Réinitialiser les options</button>`:""}
+    </div>
+  </div>`;
+}
+
+function selSim(id){simSel=id;simOpts={};womaFormule="serenite";renderSim();}
+function togOpt(id){
+  const d=SIM[simSel];
+  const o=(d.opts||[]).find(x=>x.id===id);
+  if(!o) return;
+  if(simOpts[id]){delete simOpts[id];}
+  else{
+    if(o.ex) o.ex.forEach(ex=>delete simOpts[ex]);
+    (d.opts||[]).forEach(x=>{if(x.ex&&x.ex.includes(id)&&simOpts[x.id]) delete simOpts[x.id];});
+    simOpts[id]=true;
+  }
+  renderSim();
+}
+function togRemb(){showRemb=!showRemb;renderSim();}
+function resetOpts(){simOpts={};renderSim();}
+function setWoma(f){womaFormule=f;renderSim();}
+
+// ═══════════════════════════════════════════════════
+// Q&A SECTION
+// ═══════════════════════════════════════════════════
+function renderQACats(){
+  document.getElementById("qa-cats").innerHTML=QA_CATS.map(c=>`
+    <button class="qa-clink ${qaCat===c.id?'active':''}" onclick="setQACat('${c.id}')">${c.l}</button>
+  `).join("");
+}
+
+function renderQAList(){
+  renderQACats();
+  const search=qaSearch.toLowerCase();
+  let items=qaData.filter(q=>{
+    const matchCat=q.cat===qaCat;
+    const matchSearch=!search||(q.q.toLowerCase().includes(search)||q.a.toLowerCase().includes(search));
+    return matchCat&&matchSearch;
+  });
+  const catLabel=QA_CATS.find(c=>c.id===qaCat)?.l||"";
+  let html=`<div class="qa-sectitle">${catLabel}</div>`;
+  if(items.length===0) html+=`<p style="font-size:13px;color:#888;padding:12px 0">Aucune question dans cette catégorie pour l'instant.</p>`;
+  else html+=items.map(q=>`<div class="qa-item">
+    <div class="qa-q" id="qq-${q.id}" onclick="tQA('qq-${q.id}','qa-${q.id}')"><span>${q.q}</span><span class="arr">▼</span></div>
+    <div class="qa-a" id="qa-${q.id}">${q.a}</div>
+  </div>`).join("");
+  html+=`<button class="qa-add-btn" onclick="openModal('${qaCat}')">➕ Ajouter une question</button>`;
+  document.getElementById("qa-list").innerHTML=html;
+}
+
+function setQACat(c){qaCat=c;qaSearch="";document.getElementById("qa-search").value="";renderQAList();}
+function searchQA(){qaSearch=document.getElementById("qa-search").value;renderQAList();}
+function tQA(qid,aid){
+  const q=document.getElementById(qid),a=document.getElementById(aid);
+  if(!q||!a) return;
+  q.classList.toggle("open");a.classList.toggle("open");
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL AJOUT
+// ═══════════════════════════════════════════════════
+function openModal(cat){
+  modalCat=cat;
+  document.getElementById("m-cat").innerHTML=QA_CATS.map(c=>`<option value="${c.id}" ${c.id===cat?'selected':''}>${c.l}</option>`).join("");
+  document.getElementById("m-q").value="";
+  document.getElementById("m-a").value="";
+  document.getElementById("modal-bg").classList.add("open");
+}
+function closeModal(){document.getElementById("modal-bg").classList.remove("open");}
+function saveQuestion(){
+  const cat=document.getElementById("m-cat").value;
+  const q=document.getElementById("m-q").value.trim();
+  const a=document.getElementById("m-a").value.trim();
+  if(!q||!a){alert("Merci de remplir la question et la réponse.");return;}
+  const newQ={id:Date.now(),cat,q,a};
+  qaData.push(newQ);
+  saveQA(qaData);
+  closeModal();
+  // Refresh
+  if(qaCat===cat) renderQAList();
+  if(mapSel===cat) selMap(mapSel);
+}
+// Close modal on bg click
+document.getElementById("modal-bg").addEventListener("click",function(e){if(e.target===this) closeModal();});
+
+// ═══════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════
+function swSec(id,btn){
+  document.querySelectorAll(".sec").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".ntab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("sec-"+id).classList.add("active");
+  btn.classList.add("active");
+  if(id==="qa") renderQAList();
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+buildGrid("map-grid",null,"selMap");
+buildGrid("sim-grid",null,"selSim");
+</script>
+</body>
+</html>
